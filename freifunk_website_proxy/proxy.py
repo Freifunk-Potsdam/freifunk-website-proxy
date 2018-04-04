@@ -48,7 +48,11 @@ class Website:
         
     def get_nginx_configuration(self):
         """Return the nginx configuration for the website to serve"""
-        return self.configuration_template.format(host=self.host, port=self.port, domain=self.domain, )
+        return self.configuration_template.format(host=self.host, port=self.port, domain=self.domain)
+    
+    def write_nginx_configuration(self):
+        with open(self.configuration_file, "w") as f:
+            f.write(self.get_nginx_configuration())
 
 
 class Proxy:
