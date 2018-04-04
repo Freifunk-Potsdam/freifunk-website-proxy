@@ -1,4 +1,4 @@
-from freifunk_website_proxy.app import app
+from freifunk_website_proxy.app import main
 
-app.run(port=80, debug=True, host="")
+main()
 
