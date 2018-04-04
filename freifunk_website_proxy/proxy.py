@@ -45,6 +45,7 @@ class Website:
         self.host, self.port = server_address
         self.domain = sub_domain + "." + domain
         self.configuration_file = configuration_file
+        self.id = self.domain
         
     def get_nginx_configuration(self):
         """Return the nginx configuration for the website to serve"""
@@ -67,9 +68,9 @@ class Proxy:
         self.websites = []
         self.configuration_directory = configuration_directory
         self.configuration_file = os.path.join(configuration_directory, "all")
-        with open(self.configuration_file, "w"): pass
         self.website_files = os.path.join(configuration_directory, "websites")
         os.makedirs(self.website_files, exist_ok=True)
+        with open(self.configuration_file, "w"): pass
 
     def serve(self, server_address, sub_domain):
         """Serve the content from the server address at the sub_domain.
@@ -80,5 +81,7 @@ class Proxy:
         configuration_file = os.path.join(self.website_files, sub_domain)
         website = Website(server_address, self.domain, sub_domain, configuration_file)
         self. websites.append(website)
-        
+        return website
+
+
 

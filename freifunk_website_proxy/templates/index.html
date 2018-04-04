@@ -14,9 +14,27 @@
     </p>
     <form action="/add-page" method="post">
       IP: <input type="text" name="ip" placeholder="10.22.73.144">
-      Port: <input type="text" name="port" placeholder="10.22.73.144">
+      Port: <input type="text" name="port" placeholder="10.22.73.144" value="80">
       Name: <input type="text" name="name" placeholder="mein-server">.freifunk.quelltext.eu
       <input type="submit" value="Submit">
     </form>
+    <p>
+      Folgende Adressen sind schon eingetragen:
+    </p>
+    <table>
+      <tr id="websites">
+        <td>Domain</td>
+        <td>IP</td>
+        <td>Port</td>
+      </tr>
+      % for website in sorted(proxy.websites, key=lambda w: w.domain):
+        <tr id="{{ website.id }}">
+          <td>{{ website.domain }}</td>
+          <td>{{ website.host }}</td>
+          <td>{{ website.port }}</td>
+        </tr>
+      % end
+    </table>
   </body>
 </html>
+
