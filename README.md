@@ -2,6 +2,15 @@
 
 
 
+Configuration
+-------------
+
+- `DOMAIN` default `localhost`  
+  This is the domain your servers serves from.
+  If DOMAIN is "test.freifunk.net", new a hostname "chocolate" is prepended so the website is served under "chocolate.test.freifunk.net".
+- `NETWORK` default `10.0.0.0/8`  
+  This is the network address of the accepted services.
+  I.e. Freifunk in Potsdam covers `10.22.0.0/16`.
 
 
 
