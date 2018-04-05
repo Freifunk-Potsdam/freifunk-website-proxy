@@ -1,12 +1,12 @@
 import os
 from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate
 from .proxy import Proxy
+from .nginx import configure_nginx, nginx_is_available
 
 HERE = os.path.dirname(__file__ or ".")
 STATIC_FILES = os.path.join(HERE, "static")
 DOMAIN = os.environ.get("DOMAIN", "localhost")
 MAXIMUM_HOST_NAME_LENGTH = 50
-PROXY_CONFIGURATION_FOLDER = "./generated_nginx_configuration"
 
 # ValidIpAddressRegex and ValidHostnameRegex from https://stackoverflow.com/a/106223
 ValidIpAddressRegex = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
@@ -42,6 +42,10 @@ def add_server_redirect():
     port = int(port)
     assert 0 < port < 65536, "The port must be in range, not \"{}\".".format(port)
     website = proxy.serve((ip, port), hostname)
+    if nginx_is_available():
+        configure_nginx(proxy.get_nginx_configuration())
+    else:
+        print(proxy.get_nginx_configuration())
     redirect("/#" + website.id)
 
 

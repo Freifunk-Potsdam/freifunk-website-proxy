@@ -29,8 +29,8 @@
       </tr>
       % for website in sorted(proxy.websites, key=lambda w: w.domain):
         <tr id="{{ website.id }}">
-          <td>{{ website.domain }}</td>
-          <td>{{ website.host }}</td>
+          <td><a href="http://{{ website.domain }}">{{ website.domain }}</a></td>
+          <td><a href="http://{{ website.host }}:{{ website.port }}">{{ website.host }}</a></td>
           <td>{{ website.port }}</td>
         </tr>
       % end

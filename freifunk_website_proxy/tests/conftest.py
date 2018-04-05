@@ -13,16 +13,10 @@ def domain():
 
 
 @fixture
-def configuration_directory(tmpdir):
-    """The folder for the configuration files."""
-    return tmpdir.dirpath()
-
-
-@fixture
-def proxy(domain, configuration_directory):
+def proxy(domain):
     """A Proxy to test."""
     from freifunk_website_proxy.proxy import Proxy
-    return Proxy(domain, configuration_directory)
+    return Proxy(domain)
 
 
 @fixture
@@ -37,13 +31,7 @@ def server_address():
 
 
 @fixture
-def configuration_file(configuration_directory):
-    """A possible configuration file."""
-    return os.path.join(configuration_directory, "test-config")
-
-
-@fixture
-def website(server_address, domain, sub_domain, configuration_file):
+def website(server_address, domain, sub_domain):
     """A website to serve."""
     from freifunk_website_proxy.proxy import Website
-    return Website(server_address, domain, sub_domain, configuration_file)
+    return Website(server_address, domain, sub_domain)
