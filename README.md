@@ -37,11 +37,14 @@ You can setup the server for your community in case the server is not there.
 4. Setup a domain name.
    In case you have just a home router, you can use e.g. http://selfhost.eu to get a free of charge dynamic domain name.
 5. In order for other people to reach not only your domain name but also other services on this domain,
-   you need to setup a cname record. Example:
-   You registered `quelltext.selfhost.eu` free of charge.
-   Now, you pay 2€/year and you buy `quelltext.eu`.
-   Then, you setup the CNAME record `*.quelltext.eu` to point to `quelltext.selfhost.eu`.
-   You can also contact @niccokunzmann in an issue if you like to use a domain named `my-community.quelltext.eu`.
+   you need to setup a cname record.
+   - Example:
+     You registered `quelltext.selfhost.eu` free of charge.
+     Now, you pay 2€/year and you buy `quelltext.eu`.
+     Then, you setup the CNAME record `*.quelltext.eu` to point to `quelltext.selfhost.eu`.
+   - You can also contact @niccokunzmann in an issue if you like to use a domain named `my-community.quelltext.eu`.
+   - Your community has a website e.g. `freifunk-potsdam.de`.
+     They can setup `service.freifunk-potsdam.de` and `*.service.freifunk-potsdam.de` to point to your domain.
 6. Configure your gateway to update the IP address behind the domain name.
    Your gateway usually has a dyndns configuration which you can configure.
    This will update the registered dynamic domain name once your provider switches your IP address.
