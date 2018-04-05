@@ -38,6 +38,12 @@ RUN pip install --upgrade --no-cache-dir -r requirements.txt
 ENTRYPOINT ["/bin/sh", "start-service.sh"]
 ADD start-service.sh .
 
+# add source files
+ENV SOURCE_CODE="/app"
+ADD LICENSE .
+ADD Dockerfile.license .
+ADD Dockerfile .
+
 # Add the app
 ADD freifunk_website_proxy freifunk_website_proxy
 

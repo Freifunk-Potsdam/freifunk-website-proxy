@@ -60,12 +60,25 @@ Once this is done, they have a much easier process to share their site.
 Configuration
 -------------
 
+The configuration of the service is done via environment variables.
+This is the configuration you should touch:
+
 - `DOMAIN` default `localhost`  
   This is the domain your servers serves from.
   If DOMAIN is "test.freifunk.net", new a hostname "chocolate" is prepended so the website is served under "chocolate.test.freifunk.net".
 - `NETWORK` default `10.0.0.0/8`  
   This is the network address of the accepted services.
   I.e. Freifunk in Potsdam covers `10.22.0.0/16`.
+
+This is configuration you can touch:
+- `DATABASE`  
+  This is the place the data is stored when the service restarts.
+  - default for the Python app is `` and nothing will be saved to a file.
+  - default for the docker container is `/data/db.pickle` which holds the state of the proxy.
+- `SOURCE_CODE`  
+  This is the directory the currently running source code can be obtained from.
+  - default for the Python app is the module directory.
+  - default for the docker container is `/app`-
 
 Development
 -----------

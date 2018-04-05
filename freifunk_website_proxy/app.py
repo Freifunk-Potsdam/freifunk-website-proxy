@@ -10,6 +10,8 @@ STATIC_FILES = os.path.join(HERE, "static")
 DOMAIN = os.environ.get("DOMAIN", "localhost")
 NETWORK_STRING = os.environ.get("NETWORK", "10.0.0.0/8")
 DATABASE = os.environ.get("DATABASE", "")
+SOURCE_CODE = os.environ.get("SOURCE_CODE", HERE)
+APPLICATION = __name__.split(".")[0]
 
 NETWORK = ipaddress.ip_network(NETWORK_STRING)
 MAXIMUM_HOST_NAME_LENGTH = 50
@@ -23,7 +25,7 @@ if DATABASE:
 else:
     database = NullDatabase()
 
-proxy = database.load_save()
+proxy = database.load_safely()
 if proxy is None:
     proxy = Proxy(DOMAIN)
 
@@ -67,6 +69,17 @@ def add_server_redirect():
     update_nginx()
     database.save(proxy)
     redirect("/#" + website.id)
+
+
+@route("/source.zip")
+def get_source():
+    """Download the source of this application."""
+    # from http://stackoverflow.com/questions/458436/adding-folders-to-a-zip-file-using-python#6511788
+    import tempfile, shutil, os
+    directory = tempfile.mkdtemp()
+    temp_path = os.path.join(directory, APPLICATION)
+    zip_path = shutil.make_archive(temp_path, "zip", SOURCE_CODE)
+    return static_file(APPLICATION + ".zip", root=directory)
 
 
 def main():

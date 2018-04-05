@@ -26,7 +26,7 @@ class Database:
         with open(self.file, "rb") as f:
             return pickle.load(f)
     
-    def load_save(self):
+    def load_safely(self):
         """Load the object from the file but return None in case of an error."""
         try:
             return self.load()
@@ -45,7 +45,7 @@ class NullDatabase:
     def load(self):
         """Load nothing."""
         return None
-    load_safe = load
+    load_safely = load
 
 
 __all__ = ["Database"]
