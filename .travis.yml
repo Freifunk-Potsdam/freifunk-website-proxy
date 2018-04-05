@@ -1,4 +1,4 @@
-language: Python
+language: python
 python:
 - 3.5
 
@@ -7,6 +7,10 @@ services:
 
 install:
 - pip install -r requirements.txt -r dev-requirements.txt
+- docker build --tag niccokunzmann/freifunk-website-proxy .
+- export CONTAINER_NAME=test-container-travis
 
 script:
 - pytest
+- "docker run -p 9000:80 -e DOMAIN=localhost:9000 -d --name $CONTAINER_NAME --rm niccokunzmann/freifunk-website-proxy && sleep 1"
+- "docker ps | grep -q -F $CONTAINER_NAME"
