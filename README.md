@@ -13,7 +13,7 @@ Using the Server
 ----------------
 
 You create an http service in the local community network.
-Then, you go to the website of your community. There may be many.
+Then, you go to this service installation for your community.
 - [Potsdam][ffp]
 
 You put in your ip address, your server name and your port.
