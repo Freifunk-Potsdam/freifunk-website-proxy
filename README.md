@@ -1,6 +1,8 @@
 Freifunk Website Proxy
 ======================
 
+![Docker Build Status](https://img.shields.io/docker/build/niccokunzmann/freifunk-website-proxy.svg)
+
 This is a tool to make local services served in a community network available to the outside internet.
 The intention is to
 1. lower the bar to create internet services
