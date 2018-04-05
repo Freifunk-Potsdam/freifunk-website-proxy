@@ -48,6 +48,8 @@ You can setup the server for your community in case the server is not there.
 
 Once these steps are undergone, you should be able to access your server from the internet using your domain and
 be able to register new clients.
+Note that this looks like a lot bot this would be necessary for many more people to provide their services.
+Once this is done, they have a much easier process to share their site.
 
 Configuration
 -------------
@@ -69,9 +71,9 @@ Run the server
 
 Build the server and run it 
 
-    docker build --tag niccokunzmann/freifunk-website-proxy . && docker run -p "9000:80" -p "9001:9001" -e "DOMAIN=localhost:9000" -it --rm niccokunzmann/freifunk-website-proxy
+    docker build --tag niccokunzmann/freifunk-website-proxy . && docker run -p "9000:80" -e "DOMAIN=localhost:9000" -it --rm niccokunzmann/freifunk-website-proxy
 
-Dann ist der Server auf http://localhost:9000 bzw http://localhost:9001 erreichbar.
+Now, you can reach your server under http://localhost:9000.
 
 Run the tests
 
