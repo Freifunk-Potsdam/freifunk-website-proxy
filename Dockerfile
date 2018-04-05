@@ -22,12 +22,15 @@ EXPOSE 80 443
 # Create app environment
 RUN mkdir /app
 WORKDIR /app
-ENTRYPOINT ["python", "-m", "freifunk_website_proxy"]
 ENV PYTHONUNBUFFERED=true
 
 # Install Packages
 ADD requirements.txt .
 RUN pip install --upgrade --no-cache-dir -r requirements.txt
+
+# Start service
+ENTRYPOINT ["/bin/sh", "start-service.sh"]
+ADD start-service.sh .
 
 # Add the app
 ADD freifunk_website_proxy freifunk_website_proxy

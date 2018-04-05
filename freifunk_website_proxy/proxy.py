@@ -4,19 +4,22 @@ This module is the interface to the http proxy.
 """
 import os
 
+APP_PORT = 9001
+NGINX_PORT = 80
+
 NGINX_CONFIGURATION = """
 #
 # copied from https://gist.githubusercontent.com/nishantmodak/d08aae033775cb1a0f8a/raw/ebea0ae66e0a0188009accae2acba88cc646ddcd/nginx.conf.default
 #
 
 worker_processes  2;
+#error_log /dev/stdout debug;
 
 events {{
     worker_connections  1024;
 }}
 
 http {{
-    include       mime.types;
     default_type  application/octet-stream;
     log_format  main  '$remote_addr - $http_host $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
@@ -24,7 +27,9 @@ http {{
     sendfile        on;
     keepalive_timeout  65;
     gzip  on;
-
+    #access_log off;
+    access_log /dev/stdout;
+    
     {websites}
 }}
 """
@@ -35,8 +40,7 @@ class Website:
     configuration_template = """
     server {{
         server_name {domain};
-        listen 0.0.0.0:80;
-        access_log off;
+        listen """ + str(NGINX_PORT) + """;
         location / {{
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -70,6 +74,12 @@ class Website:
         return self.configuration_template.format(host=self.host, port=self.port, domain=self.domain)
 
 
+class LocalWebsite(Website):
+
+    def __init__(self, domain):
+        super().__init__(("localhost", APP_PORT), domain, "")
+        self.domain = domain
+
 class Proxy:
     """Create a proxy class for a given domain name"""
 
@@ -80,6 +90,7 @@ class Proxy:
         """
         self.domain = domain
         self.websites = []
+        self._local_website = LocalWebsite(domain)
 
     def serve(self, server_address, sub_domain):
         """Serve the content from the server address at the sub_domain.
@@ -94,8 +105,9 @@ class Proxy:
     def get_nginx_configuration(self):
         """Get the nginx configuration."""
         websites = [website.get_nginx_configuration() for website in self.websites]
-        return NGINX_CONFIGURATION.format(websites="\n".join(websites))
+        websites.append(self._local_website.get_nginx_configuration())
+        return NGINX_CONFIGURATION.format(websites="".join(websites))
             
 
-
+__all__ = ["Proxy", "APP_PORT"]
 

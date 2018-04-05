@@ -14,6 +14,14 @@ ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([
 
 
 proxy = Proxy(DOMAIN)
+def update_nginx():
+    """Restart nginx with a new configuration."""
+    print(proxy.get_nginx_configuration())
+    if nginx_is_available():
+        configure_nginx(proxy.get_nginx_configuration())
+    else:
+        print("NO NGINX")
+
 
 @route("/")
 def landing_page():
@@ -42,23 +50,14 @@ def add_server_redirect():
     port = int(port)
     assert 0 < port < 65536, "The port must be in range, not \"{}\".".format(port)
     website = proxy.serve((ip, port), hostname)
-    print(proxy.get_nginx_configuration())
-    if nginx_is_available():
-        configure_nginx(proxy.get_nginx_configuration())
-    else:
-        print("NO NGINX")
+    update_nginx()
     redirect("/#" + website.id)
 
 
 def main():
     """Run the server app."""
-    try:
-        run(port=80, debug=True, host="")
-    except PermissionError:
-        pass
-    else:
-        return
-    run(port=8080, debug=True, host="")
+    update_nginx()
+    run(port=9001, debug=True, host="")
 
 __all__ = ["main"]
 
