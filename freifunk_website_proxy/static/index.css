@@ -1,0 +1,55 @@
+
+h2 {
+  width: 100%;
+  text-align: center;
+}
+
+p {
+  max-width: 40em;
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+form {
+  padding: 1em;
+}
+
+table {
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+td {
+  padding-right: 0.1em;
+  padding-left: 0.1em;
+}
+
+.heading td {
+  text-align: center;
+}
+
+footer {
+  padding-top: 1em;
+  padding-right: 1em;
+  padding-left: 1em;
+  width: 100%;
+  color: #888888;
+}
+
+footer a {
+  color: #888888;
+}
+
+#input-ip {
+  width: 8em;
+}
+
+#input-port {
+  width: 3em;
+}
+
+#input-name {
+  width: 8em;
+}
+
+
