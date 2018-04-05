@@ -24,6 +24,12 @@ RUN mkdir /app
 WORKDIR /app
 ENV PYTHONUNBUFFERED=true
 
+# Create volume for persistence
+ENV VOLUME=/data
+ENV DATABASE=$VOLUME/db.pickle
+RUN mkdir $VOLUME
+VOLUME $VOLUME
+
 # Install Packages
 ADD requirements.txt .
 RUN pip install --upgrade --no-cache-dir -r requirements.txt

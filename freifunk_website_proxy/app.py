@@ -2,12 +2,15 @@ import os
 from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate, request
 from .proxy import Proxy
 from .nginx import configure_nginx, nginx_is_available
+from .database import Database, NullDatabase
 import ipaddress
 
 HERE = os.path.dirname(__file__ or ".")
 STATIC_FILES = os.path.join(HERE, "static")
 DOMAIN = os.environ.get("DOMAIN", "localhost")
 NETWORK_STRING = os.environ.get("NETWORK", "10.0.0.0/8")
+DATABASE = os.environ.get("DATABASE", "")
+
 NETWORK = ipaddress.ip_network(NETWORK_STRING)
 MAXIMUM_HOST_NAME_LENGTH = 50
 
@@ -15,8 +18,15 @@ MAXIMUM_HOST_NAME_LENGTH = 50
 ValidIpAddressRegex = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
 ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
 
+if DATABASE:
+    database = Database(DATABASE)
+else:
+    database = NullDatabase()
 
-proxy = Proxy(DOMAIN)
+proxy = database.load_save()
+if proxy is None:
+    proxy = Proxy(DOMAIN)
+
 def update_nginx():
     """Restart nginx with a new configuration."""
     if nginx_is_available():
@@ -56,6 +66,7 @@ def add_server_redirect():
     assert ipaddress.ip_address(ip) in NETWORK, "IP \"{}\" is expected to be in the network \"{}\"".format(ip, NETWORK_STRING)
     website = proxy.serve((ip, port), hostname)
     update_nginx()
+    database.save(proxy)
     redirect("/#" + website.id)
 
 

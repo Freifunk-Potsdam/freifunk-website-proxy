@@ -35,3 +35,12 @@ def website(server_address, domain, sub_domain):
     """A website to serve."""
     from freifunk_website_proxy.proxy import Website
     return Website(server_address, domain, sub_domain)
+
+
+@fixture
+def db(tmpdir):
+    from freifunk_website_proxy.database import Database
+    file = tmpdir.mkdir("sub").join("hello.txt")
+    return Database(file)
+
+
