@@ -1,5 +1,5 @@
 import os
-from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate
+from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate, request
 from .proxy import Proxy
 from .nginx import configure_nginx, nginx_is_available
 
@@ -16,16 +16,17 @@ ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([
 proxy = Proxy(DOMAIN)
 def update_nginx():
     """Restart nginx with a new configuration."""
-    print(proxy.get_nginx_configuration())
     if nginx_is_available():
         configure_nginx(proxy.get_nginx_configuration())
     else:
+        print(proxy.get_nginx_configuration())
         print("NO NGINX")
 
 
 @route("/")
 def landing_page():
     """Redirect users from the landing page to the static files."""
+    print("Host: ", request.headers["Host"])
     with open(os.path.join(HERE, "templates", "index.html")) as f:
         landing_page_template = SimpleTemplate(f.read())
     return landing_page_template.render(proxy=proxy)

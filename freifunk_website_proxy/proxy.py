@@ -21,7 +21,7 @@ events {{
 
 http {{
     default_type  application/octet-stream;
-    log_format  main  '$remote_addr - $http_host $remote_user [$time_local] "$request" '
+    log_format  main  '$remote_addr -> $http_host $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
     sendfile        on;
@@ -40,7 +40,7 @@ class Website:
     configuration_template = """
     server {{
         server_name {domain};
-        listen """ + str(NGINX_PORT) + """;
+        listen 0.0.0.0:""" + str(NGINX_PORT) + """;
         location / {{
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -76,9 +76,9 @@ class Website:
 
 class LocalWebsite(Website):
 
-    def __init__(self, domain):
-        super().__init__(("localhost", APP_PORT), domain, "")
-        self.domain = domain
+    def __init__(self):
+        super().__init__(("localhost", APP_PORT), "", "")
+        self.domain = "default_server"
 
 class Proxy:
     """Create a proxy class for a given domain name"""
@@ -90,7 +90,7 @@ class Proxy:
         """
         self.domain = domain
         self.websites = []
-        self._local_website = LocalWebsite(domain)
+        self._local_website = LocalWebsite()
 
     def serve(self, server_address, sub_domain):
         """Serve the content from the server address at the sub_domain.
@@ -105,7 +105,7 @@ class Proxy:
     def get_nginx_configuration(self):
         """Get the nginx configuration."""
         websites = [website.get_nginx_configuration() for website in self.websites]
-        websites.append(self._local_website.get_nginx_configuration())
+        websites.insert(0, self._local_website.get_nginx_configuration())
         return NGINX_CONFIGURATION.format(websites="".join(websites))
             
 
