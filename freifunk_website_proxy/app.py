@@ -2,10 +2,13 @@ import os
 from bottle import run, route, static_file, redirect, post, request, re, SimpleTemplate, request
 from .proxy import Proxy
 from .nginx import configure_nginx, nginx_is_available
+import ipaddress
 
 HERE = os.path.dirname(__file__ or ".")
 STATIC_FILES = os.path.join(HERE, "static")
 DOMAIN = os.environ.get("DOMAIN", "localhost")
+NETWORK_STRING = os.environ.get("NETWORK", "10.0.0.0/8")
+NETWORK = ipaddress.ip_network(NETWORK_STRING)
 MAXIMUM_HOST_NAME_LENGTH = 50
 
 # ValidIpAddressRegex and ValidHostnameRegex from https://stackoverflow.com/a/106223
@@ -29,7 +32,7 @@ def landing_page():
     print("Host: ", request.headers["Host"])
     with open(os.path.join(HERE, "templates", "index.html")) as f:
         landing_page_template = SimpleTemplate(f.read())
-    return landing_page_template.render(proxy=proxy)
+    return landing_page_template.render(proxy=proxy, NETWORK=NETWORK, DOMAIN=DOMAIN)
 
 
 @route("/static/<filename>")
@@ -50,6 +53,7 @@ def add_server_redirect():
     assert port.isdigit(), "A port must be a number, not \"{}\".".format(port)
     port = int(port)
     assert 0 < port < 65536, "The port must be in range, not \"{}\".".format(port)
+    assert ipaddress.ip_address(ip) in NETWORK, "IP \"{}\" is expected to be in the network \"{}\"".format(ip, NETWORK_STRING)
     website = proxy.serve((ip, port), hostname)
     update_nginx()
     redirect("/#" + website.id)

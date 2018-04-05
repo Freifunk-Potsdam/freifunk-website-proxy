@@ -13,9 +13,9 @@
       erreichbar machen.
     </p>
     <form action="/add-page" method="post">
-      IP: <input type="text" name="ip" placeholder="10.22.73.144">
-      Port: <input type="text" name="port" placeholder="10.22.73.144" value="80">
-      Name: <input type="text" name="name" placeholder="mein-server">.freifunk.quelltext.eu
+      IP: <input type="text" name="ip" placeholder="{{ NETWORK.network_address + 1 }}">
+      Port: <input type="text" name="port" placeholder="80" value="80">
+      Name: <input type="text" name="name" placeholder="chocolate">.{{DOMAIN}}
       <input type="submit" value="Submit">
     </form>
     <p>
