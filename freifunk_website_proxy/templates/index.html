@@ -13,16 +13,24 @@
       Mit diesem Proxy kannst du die über das Internet und einen selbstgewählten Namen
       erreichbar machen.
     </p>
-    <form action="/add-page" method="post">
-      IP:   <input type="text" name="ip"   id="input-ip"   placeholder="{{ NETWORK.network_address + 1 }}">
-      Port: <input type="text" name="port" id="input-port" placeholder="80" value="80">
-      Name: <input type="text" name="name" id="input-name" placeholder="chocolate">.{{DOMAIN}}
-      <input type="submit" value="Submit">
+    <form action="/add-page" method="post" class="bordered">
+      <div class="form-entry">
+        IP:   <input type="text" name="ip"   id="input-ip"   placeholder="{{ NETWORK.network_address + 1 }}">
+      </div>
+      <div class="form-entry">
+        Port: <input type="text" name="port" id="input-port" placeholder="80" value="80">
+      </div>
+      <div class="form-entry">
+        Name: <input type="text" name="name" id="input-name" placeholder="chocolate">.{{DOMAIN}}
+      </div>
+      <div class="submit">
+        <input type="submit" value="Eintragen">
+      </div>
     </form>
     <p>
       Folgende Adressen sind schon eingetragen:
     </p>
-    <table>
+    <table class="bordered">
       <tr id="websites" class="heading">
         <td>Domain</td>
         <td>IP</td>
