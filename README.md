@@ -2,7 +2,7 @@ Freifunk Website Proxy
 ======================
 
 [![Build Status](https://travis-ci.org/niccokunzmann/freifunk-website-proxy.svg?branch=master)](https://travis-ci.org/niccokunzmann/freifunk-website-proxy)
-![Docker Build Status](https://img.shields.io/docker/build/niccokunzmann/freifunk-website-proxy.svg)
+[![Docker Build Status](https://img.shields.io/docker/build/niccokunzmann/freifunk-website-proxy.svg)](https://hub.docker.com/r/niccokunzmann/freifunk-website-proxy/)
 
 This is a tool to make local services served in a community network available to the outside internet.
 The intention is to
