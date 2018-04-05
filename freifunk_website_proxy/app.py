@@ -13,7 +13,7 @@ ValidIpAddressRegex = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}(
 ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
 
 
-proxy = Proxy(DOMAIN, PROXY_CONFIGURATION_FOLDER)
+proxy = Proxy(DOMAIN)
 
 @route("/")
 def landing_page():
@@ -42,10 +42,11 @@ def add_server_redirect():
     port = int(port)
     assert 0 < port < 65536, "The port must be in range, not \"{}\".".format(port)
     website = proxy.serve((ip, port), hostname)
+    print(proxy.get_nginx_configuration())
     if nginx_is_available():
         configure_nginx(proxy.get_nginx_configuration())
     else:
-        print(proxy.get_nginx_configuration())
+        print("NO NGINX")
     redirect("/#" + website.id)
 
 

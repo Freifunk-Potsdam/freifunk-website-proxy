@@ -18,7 +18,7 @@ def configure_nginx(configuration):
     subprocess.run(["nginx", "-s", "reload", "-c", f.name], check=True)
 
 
-def nginx_is_available(configuration):
+def nginx_is_available():
     """Return whether nginx is available."""
     return subprocess.run(["which", "nginx"]).returncode == 0
 
