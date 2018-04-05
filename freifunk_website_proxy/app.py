@@ -39,7 +39,6 @@ def update_nginx():
 @route("/")
 def landing_page():
     """Redirect users from the landing page to the static files."""
-    print("Host: ", request.headers["Host"])
     with open(os.path.join(HERE, "templates", "index.html")) as f:
         landing_page_template = SimpleTemplate(f.read())
     return landing_page_template.render(proxy=proxy, NETWORK=NETWORK, DOMAIN=DOMAIN)
