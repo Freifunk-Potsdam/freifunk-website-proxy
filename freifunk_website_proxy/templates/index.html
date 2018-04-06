@@ -30,7 +30,7 @@
     <p>
       Folgende Adressen sind schon eingetragen:
     </p>
-    <table class="bordered">
+    <table class="bordered entry-table">
       <tr id="websites" class="heading">
         <td>Domain</td>
         <td>IP</td>
@@ -38,9 +38,9 @@
       </tr>
       % for website in sorted(proxy.websites, key=lambda w: w.domain):
         <tr id="{{ website.id }}">
-          <td><a href="http://{{ website.domain }}">{{ website.domain }}</a></td>
-          <td><a href="http://{{ website.host }}:{{ website.port }}">{{ website.host }}</a></td>
-          <td>{{ website.port }}</td>
+          <td class="domain"><a href="http://{{ website.domain }}">{{ website.domain }}</a></td>
+          <td class="ip"><a href="http://{{ website.host }}:{{ website.port }}">{{ website.host }}</a></td>
+          <td class="port">{{ website.port }}</td>
         </tr>
       % end
     </table>

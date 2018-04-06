@@ -78,5 +78,15 @@ footer a {
   padding: 0.1em;
 }
 
+.entry-table .domain {
+  text-align: right;
+}
 
+.entry-table .ip {
+  text-align: left;
+}
+
+.entry-table .port {
+  text-align: right;
+}
 
