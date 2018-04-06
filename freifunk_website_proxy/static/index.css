@@ -23,16 +23,16 @@ form {
   margin: 1em;
 }
 
-table {
+.entry-table {
   padding-right: 1em;
   padding-left: 1em;
 }
 
-table a {
+.entry-table a {
   text-decoration: none;
 }
 
-td {
+.entry-table td {
   padding: 0.1em;
   border-top-style: solid;
   border-top-width: 1px;
