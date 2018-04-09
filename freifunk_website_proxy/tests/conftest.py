@@ -31,10 +31,10 @@ def server_address():
 
 
 @fixture
-def website(server_address, domain, sub_domain):
+def website(server_address, sub_domain, proxy):
     """A website to serve."""
     from freifunk_website_proxy.proxy import Website
-    return Website(server_address, domain, sub_domain)
+    return Website(server_address, sub_domain, proxy)
 
 
 @fixture

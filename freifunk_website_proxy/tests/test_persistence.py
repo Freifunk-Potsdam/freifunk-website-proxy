@@ -32,3 +32,9 @@ def test_can_save_functions(db):
     db.save(test_can_save_functions)
     assert db.load() == test_can_save_functions
 
+
+def test_can_not_load_from_different_version(db):
+    db.save(123)
+    db.version += 1
+    assert db.load() is None
+

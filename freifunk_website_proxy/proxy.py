@@ -63,22 +63,41 @@ class Website:
     }}
     """
 
-    def __init__(self, server_address, domain, sub_domain):
+    def __init__(self, server_address, sub_domain, proxy):
         """Create a new website."""
-        self.host, self.port = server_address
-        self.domain = sub_domain + "." + domain
+        self.host, self.port = self.address = server_address
+        self.sub_domain = sub_domain
+        self.domain = sub_domain + "." + proxy.domain
         self.id = self.domain
+        self.proxy = proxy
         
     def get_nginx_configuration(self):
         """Return the nginx configuration for the website to serve"""
         return self.configuration_template.format(host=self.host, port=self.port, domain=self.domain)
+    
+    def is_served(self):
+        """Whether the proxy serves this website."""
+        return self.proxy.is_serving(self)
+        
+    def __eq__(self, other):
+        """Return if the two websites are equal."""
+        return isinstance(other, Website) and self.id == other.id and self.address == other.address and self.domain == other.domain
+    
+    def __hash__(self):
+        """Return the hash value."""
+        return hash(self.id)
+    
+    def __repr__(self):
+        """Return a text representation."""
+        return "<Website {}>".format(self.id)
 
 
 class LocalWebsite(Website):
 
-    def __init__(self):
-        super().__init__(("localhost", APP_PORT), "", "")
+    def __init__(self, proxy):
+        super().__init__(("localhost", APP_PORT), "", proxy)
         self.domain = "default_server"
+
 
 class Proxy:
     """Create a proxy class for a given domain name"""
@@ -89,8 +108,8 @@ class Proxy:
         - domain is the domain name of the service. New entries will be sub-entries of this.
         """
         self.domain = domain
-        self.websites = []
-        self._local_website = LocalWebsite()
+        self._websites = {} # domain -> website
+        self._local_website = LocalWebsite(self)
 
     def serve(self, server_address, sub_domain):
         """Serve the content from the server address at the sub_domain.
@@ -98,8 +117,8 @@ class Proxy:
         - server_address - a tuple of (ip, port)
         - sub_domain - a valid domain name
         """
-        website = Website(server_address, self.domain, sub_domain)
-        self. websites.append(website)
+        website = Website(server_address, sub_domain, self)
+        self._websites[website.id] = website
         return website
     
     def get_nginx_configuration(self):
@@ -107,6 +126,15 @@ class Proxy:
         websites = [website.get_nginx_configuration() for website in self.websites]
         websites.insert(0, self._local_website.get_nginx_configuration())
         return NGINX_CONFIGURATION.format(websites="".join(websites))
+    
+    def is_serving(self, website):
+        """Whether the proxy is serving a website under this address."""
+        return website == self._websites.get(website.domain)
+    
+    @property
+    def websites(self):
+        """Read-only access to the websites of the proxy."""
+        return list(self._websites.values())
             
 
 __all__ = ["Proxy", "APP_PORT"]
