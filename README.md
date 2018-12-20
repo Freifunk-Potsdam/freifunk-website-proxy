@@ -98,4 +98,9 @@ Run the tests
 
     watch -n 0.5 pytest
 
+Further Reading
+---------------
+
+- [Diskussion im FreiFunk-Forum](https://forum.freifunk.net/t/lokale-webdienste-freigeben/18625)
+
 [ffp]: http://ffp.quelltext.eu
