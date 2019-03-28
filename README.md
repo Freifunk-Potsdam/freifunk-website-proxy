@@ -23,7 +23,7 @@ Setting up a Server
 -------------------
 
 You can setup the server for your community in case the server is not there.
-1. Install [docker](https://docs.docker.com/install)b.
+1. Install [docker](https://docs.docker.com/install).
    You will need a 64 bit computer.
    ```
    wget -O- https://get.docker.com | sh
